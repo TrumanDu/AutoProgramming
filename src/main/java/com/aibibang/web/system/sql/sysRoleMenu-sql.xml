@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.aibibang.web.system.dao.SysRoleMenuDao">
+
+	<parameterMap id="parameterMap" type="com.aibibang.web.system.entity.SysRoleMenu"></parameterMap>
+	<resultMap id="resultMap" type="com.aibibang.web.system.entity.SysRoleMenu">
+		<result property="id" column="id"/>
+		<result property="roleId" column="role_id"/>
+		<result property="menuId" column="menu_id"/>
+	</resultMap>
+	
+	<sql id="columnSql">
+		select
+			<trim suffixOverrides=",">
+				t.id,
+				t.role_id,
+				t.menu_id,
+		 	</trim>
+		from sys_role_menu t
+	</sql>
+	
+	<select id="find" parameterMap="parameterMap" resultMap="resultMap">
+		<include refid="columnSql"></include>
+		<where>
+			<if test="roleId != null and roleId != ''">
+				t.role_id = #{roleId}
+			</if>
+			<if test="menuId != null and menuId != ''">
+				t.menu_id = #{menuId}
+			</if>
+		</where>
+	</select>
+	
+	<select id="findByRoleId" parameterType="java.lang.Long" resultType="java.lang.Long">
+		select menu_id from sys_role_menu where role_id = #{value}
+	</select>
+	
+	<select id="getById" parameterType="java.lang.Long" resultMap="resultMap">
+		<include refid="columnSql"></include>
+		where id = #{value}
+	</select>
+	
+	<insert id="add" parameterMap="parameterMap">
+		insert into sys_role_menu
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			role_id,
+			menu_id,
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			#{roleId},
+			#{menuId},
+		</trim>
+	</insert>
+	
+	<insert id="batchAdd" parameterType="java.util.List">
+		insert into sys_role_menu
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			role_id,
+			menu_id,
+		</trim>
+		values
+		<foreach collection="list" item="item" separator=",">
+			<trim prefix="(" suffix=")" suffixOverrides=",">
+				#{item.roleId},
+				#{item.menuId},
+			</trim>
+		</foreach>
+	</insert>
+	
+	<update id="update" parameterMap="parameterMap">
+		update sys_role_menu
+		<set>
+			role_id = #{roleId},
+			menu_id = #{menuId},
+		</set>
+		where id = #{id}
+	</update>
+	
+	<update id="updateNotNull" parameterMap="parameterMap">
+		update sys_role_menu
+		<set>
+			<if test="roleId != null">
+			role_id = #{roleId},
+			</if>
+			<if test="menuId != null">
+			menu_id = #{menuId},
+			</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="delete" parameterType="java.lang.Long">
+		delete from sys_role_menu where id = #{value}
+	</delete>
+	
+	<delete id="batchDelete" parameterType="java.util.List">
+		delete from sys_role_menu where id in
+		<foreach collection="list" item="item" open="(" close=")" separator=",">
+			#{item}
+		</foreach>
+	</delete>
+	
+	<delete id="deleteByRoleId" parameterType="java.lang.Long">
+		delete from sys_role_menu where role_id = #{value}
+	</delete>
+	
+	<select id="findMenuIdByUserId" parameterType="java.lang.Long" resultType="java.lang.Long">
+		select 
+			distinct rm.menu_id
+		from sys_role_menu rm
+		left join sys_user_role ur on ur.role_id = rm.role_id
+		where ur.user_id = #{value}
+	</select>
+</mapper>

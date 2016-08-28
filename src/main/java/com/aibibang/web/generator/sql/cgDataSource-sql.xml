@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.aibibang.web.generator.dao.CgDataSourceDao">
+	
+	<parameterMap id="parameterMap" type="com.aibibang.web.generator.entity.CgDataSource"></parameterMap>
+	<resultMap id="resultMap" type="com.aibibang.web.generator.entity.CgDataSource"></resultMap>
+
+	<select id="find" parameterMap="parameterMap" resultMap="resultMap">
+		select 
+			t.id,
+			t.description,
+			t.database_type,
+			t.database_name,
+			t.server,
+			t.port,
+			t.username,
+			t.password
+		from
+			cg_data_source t
+		<where>
+			<if test="description != null and description != ''">
+				and t.description like '%${description}%'
+			</if>
+			<if test="databaseName != null and databaseName != ''">
+				and t.database_name like '%${databaseName}%'
+			</if>
+		</where>
+	</select>
+	
+	<select id="getById" parameterType="java.lang.Long" resultMap="resultMap">
+		select 
+			t.id,
+			t.description,
+			t.database_type,
+			t.database_name,
+			t.server,
+			t.port,
+			t.username,
+			t.password,
+			t.create_user,
+			t.create_date,
+			t.update_user,
+			t.update_date
+		from cg_data_source t
+		where t.id = #{value}
+	</select>
+
+	<insert id="add" parameterMap="parameterMap">
+		insert into cg_data_source 
+			(description,database_type,database_name,server,port,username,password,create_user,create_date)
+		values
+			(#{description},#{databaseType},#{databaseName},#{server},#{port},#{username},#{password},
+			#{createUser},#{createDate})
+	</insert>
+	
+	<update id="update" parameterMap="parameterMap">
+		update cg_data_source
+		<set>
+			description = #{description},
+			database_type = #{databaseType},
+			database_name = #{databaseName},
+			server = #{server},
+			port = #{port},
+			username = #{username},
+			password = #{password},
+			update_user = #{updateUser},
+			update_date = #{updateDate}
+		</set>
+		where id = #{id}
+	</update>
+
+	<delete id="delete" parameterType="java.lang.Long">
+		delete from cg_data_source where id = #{value}
+	</delete>
+</mapper>

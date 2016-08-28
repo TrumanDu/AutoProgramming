@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.aibibang.web.system.dao.SysUserRoleDao">
+
+	<parameterMap id="parameterMap" type="com.aibibang.web.system.entity.SysUserRole"></parameterMap>
+	<resultMap id="resultMap" type="com.aibibang.web.system.entity.SysUserRole">
+		<result property="id" column="id"/>
+		<result property="userId" column="user_id"/>
+		<result property="roleId" column="role_id"/>
+	</resultMap>
+	
+	<sql id="columnSql">
+		select
+			<trim suffixOverrides=",">
+				t.id,
+				t.user_id,
+				t.role_id,
+		 	</trim>
+		from sys_user_role t
+	</sql>
+	
+	<select id="find" parameterMap="parameterMap" resultMap="resultMap">
+		<include refid="columnSql"></include>
+		<where>
+			<if test="userId != null and userId != ''">
+				t.user_id = #{userId}
+			</if>
+			<if test="roleId != null and roleId != ''">
+				t.role_id = #{roleId}
+			</if>
+		</where>
+	</select>
+	
+	<select id="findByUserId" parameterType="java.lang.Long" resultType="java.lang.Long">
+		select role_id from sys_user_role where user_id = #{value}
+	</select>
+	
+	<select id="getById" parameterType="java.lang.Long" resultMap="resultMap">
+		<include refid="columnSql"></include>
+		where id = #{value}
+	</select>
+	
+	<insert id="add" parameterMap="parameterMap">
+		insert into sys_user_role
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			user_id,
+			role_id,
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			#{userId},
+			#{roleId},
+		</trim>
+	</insert>
+	
+	<insert id="batchAdd" parameterType="java.util.List">
+		insert into sys_user_role
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			user_id,
+			role_id,
+		</trim>
+		values
+		<foreach collection="list" item="item" separator=",">
+			<trim prefix="(" suffix=")" suffixOverrides=",">
+				#{item.userId},
+				#{item.roleId},
+			</trim>
+		</foreach>
+	</insert>
+	
+	<update id="update" parameterMap="parameterMap">
+		update sys_user_role
+		<set>
+			user_id = #{userId},
+			role_id = #{roleId},
+		</set>
+		where id = #{id}
+	</update>
+	
+	<update id="updateNotNull" parameterMap="parameterMap">
+		update sys_user_role
+		<set>
+			<if test="userId != null">
+			user_id = #{userId},
+			</if>
+			<if test="roleId != null">
+			role_id = #{roleId},
+			</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="delete" parameterType="java.lang.Long">
+		delete from sys_user_role where id = #{value}
+	</delete>
+	
+	<delete id="batchDelete" parameterType="java.util.List">
+		delete from sys_user_role where id in
+		<foreach collection="list" item="item" open="(" close=")" separator=",">
+			#{item}
+		</foreach>
+	</delete>
+	
+	<delete id="deleteByUserId" parameterType="java.lang.Long">
+		delete from sys_user_role where user_id = #{value}
+	</delete>
+	
+</mapper>

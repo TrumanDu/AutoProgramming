@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.aibibang.web.system.dao.SysMenuDao">
+	
+	<parameterMap id="parameterMap" type="com.aibibang.web.system.entity.SysMenu"></parameterMap>
+	<resultMap id="resultMap" type="com.aibibang.web.system.entity.SysMenu">
+		<id property="id" column="id"/>
+		<result property="menuName" column="menu_name"/>
+		<result property="menuUrl" column="menu_url"/>
+		<result property="menuIcon" column="menu_icon"/>
+		<result property="parentId" column="parent_id"/>
+		<result property="sort" column="sort"/>
+		<association property="parentMenu" column="parent_id" select="getById"></association>
+		<collection property="children" column="id" select="getByParentId"></collection>
+	</resultMap>
+
+	<sql id="queryColumn">
+		t.id,
+		t.menu_name,
+		t.menu_url,
+		t.menu_icon,
+		t.parent_id,
+		t.sort
+	</sql>
+	
+	<select id="find" parameterMap="parameterMap" resultType="com.aibibang.web.system.entity.SysMenu">
+		select 
+			<include refid="queryColumn"></include>
+		from sys_menu t
+		<where>
+			<if test="menuName != null and menuName != ''">
+				and t.menu_name like '%${menuName}%'
+			</if>
+			<if test="parentId != null">
+				and t.parent_id = #{parentId}
+			</if>
+		</where>
+		order by t.sort
+	</select>
+
+	<select id="getByParentId" parameterType="java.lang.Long" resultMap="resultMap">
+		select 
+			<include refid="queryColumn"></include>
+		from sys_menu t
+		where t.parent_id = #{value}
+		order by t.sort
+	</select>
+
+	<select id="getById" parameterType="java.lang.Long" resultMap="resultMap">
+		select 
+			<include refid="queryColumn"></include>
+		from sys_menu t
+		where t.id = #{value}
+	</select>
+
+	<insert id="add" parameterMap="parameterMap">
+		insert into sys_menu
+		(
+			menu_name,
+			menu_url,
+			menu_icon,
+			parent_id,
+			sort
+		)
+		values
+		(
+			#{menuName},
+			#{menuUrl},
+			#{menuIcon},
+			#{parentId},
+			#{sort}
+		)
+	</insert>
+	
+	<update id="update" parameterMap="parameterMap">
+		update sys_menu
+		<set>
+			menu_name = #{menuName},
+			menu_url = #{menuUrl},
+			menu_icon = #{menuIcon},
+			parent_id = #{parentId},
+			sort = #{sort},
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="delete" parameterType="java.lang.Long">
+		delete from sys_menu where id = #{value}
+	</delete>
+	
+	<delete id="deleteByParentId" parameterType="java.lang.Long">
+		delete from sys_menu where parent_id = #{value}
+	</delete>
+	
+	<select id="findForTreeTable" parameterType="java.lang.Long" resultType="com.aibibang.web.system.entity.SysMenu">
+		select 
+			<include refid="queryColumn"></include>,
+			count(m.id) as child_num
+		from sys_menu t
+		left join sys_menu m on m.parent_id = t.id
+		where t.parent_id = #{value}
+		group by t.id
+		order by t.sort
+	</select>
+	
+</mapper>

@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.aibibang.web.system.dao.SysUserDao">
+	
+	<parameterMap id="parameterMap" type="com.aibibang.web.system.entity.SysUser"></parameterMap>
+	<resultMap id="resultMap" type="com.aibibang.web.system.entity.SysUser">
+		<id property="id" column="id"/>
+		<result property="username" column="username"/>
+		<result property="password" column="password"/>
+		<result property="name" column="name"/>
+		<result property="orgId" column="org_id"/>
+		<result property="birthday" column="birthday"/>
+		<result property="phone" column="phone"/>
+		<result property="email" column="email"/>
+		<result property="description" column="description"/>
+		<result property="userPhoto" column="user_photo"/>
+		<result property="delFlag" column="del_flag"/>
+		<result property="orgCode" column="org_code"/>
+		<result property="orgName" column="org_name"/>
+	</resultMap>
+
+	<sql id="queryColumn">
+		t.id,
+		t.username,
+		t.password,
+		t.name,
+		t.org_id,
+		t.birthday,
+		t.phone,
+		t.email,
+		t.description,
+		t.user_photo
+	</sql>
+
+	<select id="find" parameterMap="parameterMap" resultMap="resultMap">
+		select 
+			<include refid="queryColumn"></include>,
+			o.org_code,
+			o.org_name
+		from sys_user t
+		left join sys_org o on o.id = t.org_id
+		<where>
+			t.del_flag = '0'
+			<if test="username != null and username != ''">
+				and t.username like '%${username}%'
+			</if>
+			<if test="name != null and name != ''">
+				and t.name like '%${name}%'
+			</if>
+			<if test="orgId != null">
+				and t.org_id = #{orgId}
+			</if>
+		</where>
+	</select>
+	
+	<select id="getById" parameterType="java.lang.Long" resultMap="resultMap">
+		select
+			<include refid="queryColumn"></include>,
+			o.org_code,
+			o.org_name
+		from sys_user t
+		left join sys_org o on o.id = t.org_id
+		where t.id = #{value}
+	</select>
+	
+	<select id="findByUsername" parameterType="java.lang.String" resultMap="resultMap">
+		select 
+			<include refid="queryColumn"></include>
+		from sys_user t
+		where t.del_flag = '0' and t.username = #{value}
+	</select>
+	
+	<insert id="add" parameterMap="parameterMap" useGeneratedKeys="true" keyProperty="id">
+		insert into sys_user
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			username,
+			password,
+			name,
+			org_id,
+			birthday,
+			phone,
+			email,
+			description,
+			user_photo,
+			del_flag,
+			create_user,
+			create_date,
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			#{username},
+			#{password},
+			#{name},
+			#{orgId},
+			#{birthday},
+			#{phone},
+			#{email},
+			#{description},
+			#{userPhoto},
+			#{delFlag},
+			#{createUser},
+			#{createDate},
+		</trim>
+	</insert>
+	
+	<update id="update" parameterMap="parameterMap">
+		update sys_user
+		<set>
+			username = #{username},
+			name = #{name},
+			org_id = #{orgId},
+			birthday = #{birthday},
+			phone = #{phone},
+			email = #{email},
+			description = #{description},
+			<if test="userPhoto != null">
+				user_photo = #{userPhoto},
+			</if>
+			update_user = #{updateUser},
+			update_date = #{updateDate},
+		</set>
+		where id = #{id}
+	</update>
+
+	<delete id="delete" parameterType="java.lang.Long">
+		delete from sys_user where id = #{value}
+	</delete>
+	
+	<delete id="batchDelete" parameterType="java.util.List">
+		delete from sys_user where id in
+		<foreach collection="list" item="item" open="(" close=")" separator=",">
+			#{item}
+		</foreach>
+	</delete>
+	
+</mapper>

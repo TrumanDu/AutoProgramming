@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.aibibang.web.system.dao.SysRoleDao">
+
+	<parameterMap id="parameterMap" type="com.aibibang.web.system.entity.SysRole"></parameterMap>
+	<resultMap id="resultMap" type="com.aibibang.web.system.entity.SysRole">
+		<result property="id" column="id"/>
+		<result property="roleCode" column="role_code"/>
+		<result property="roleName" column="role_name"/>
+		<result property="description" column="description"/>
+		<result property="createUser" column="create_user"/>
+		<result property="createDate" column="create_date"/>
+		<result property="updateUser" column="update_user"/>
+		<result property="updateDate" column="update_date"/>
+	</resultMap>
+	
+	<sql id="columnSql">
+		<trim suffixOverrides=",">
+			t.id,
+			t.role_code,
+			t.role_name,
+			t.description,
+			t.create_user,
+			t.create_date,
+			t.update_user,
+			t.update_date,
+	 	</trim>
+	</sql>
+	
+	<select id="find" parameterMap="parameterMap" resultMap="resultMap">
+		select
+			<include refid="columnSql"></include>
+		from sys_role t
+		<where>
+			<if test="roleCode != null and roleCode != ''">
+				t.role_code = #{roleCode}
+			</if>
+			<if test="roleName != null and roleName != ''">
+				t.role_name = #{roleName}
+			</if>
+			<if test="description != null and description != ''">
+				t.description = #{description}
+			</if>
+			<if test="createUser != null and createUser != ''">
+				t.create_user = #{createUser}
+			</if>
+			<if test="createDate != null and createDate != ''">
+				t.create_date = #{createDate}
+			</if>
+			<if test="updateUser != null and updateUser != ''">
+				t.update_user = #{updateUser}
+			</if>
+			<if test="updateDate != null and updateDate != ''">
+				t.update_date = #{updateDate}
+			</if>
+		</where>
+	</select>
+	
+	<select id="getById" parameterType="java.lang.Long" resultMap="resultMap">
+		select
+			<include refid="columnSql"></include>
+		from sys_role t
+		where id = #{value}
+	</select>
+	
+	<insert id="add" parameterMap="parameterMap" useGeneratedKeys="true" keyProperty="id">
+		insert into sys_role
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			role_code,
+			role_name,
+			description,
+			create_user,
+			create_date,
+			update_user,
+			update_date,
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			#{roleCode},
+			#{roleName},
+			#{description},
+			#{createUser},
+			#{createDate},
+			#{updateUser},
+			#{updateDate},
+		</trim>
+	</insert>
+	
+	<insert id="batchAdd" parameterType="java.util.List">
+		insert into sys_role
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			role_code,
+			role_name,
+			description,
+			create_user,
+			create_date,
+			update_user,
+			update_date,
+		</trim>
+		values
+		<foreach collection="list" item="item" separator=",">
+			<trim prefix="(" suffix=")" suffixOverrides=",">
+				#{item.roleCode},
+				#{item.roleName},
+				#{item.description},
+				#{item.createUser},
+				#{item.createDate},
+				#{item.updateUser},
+				#{item.updateDate},
+			</trim>
+		</foreach>
+	</insert>
+	
+	<update id="update" parameterMap="parameterMap">
+		update sys_role
+		<set>
+			role_code = #{roleCode},
+			role_name = #{roleName},
+			description = #{description},
+			create_user = #{createUser},
+			create_date = #{createDate},
+			update_user = #{updateUser},
+			update_date = #{updateDate},
+		</set>
+		where id = #{id}
+	</update>
+	
+	<update id="updateNotNull" parameterMap="parameterMap">
+		update sys_role
+		<set>
+			<if test="roleCode != null">
+			role_code = #{roleCode},
+			</if>
+			<if test="roleName != null">
+			role_name = #{roleName},
+			</if>
+			<if test="description != null">
+			description = #{description},
+			</if>
+			<if test="createUser != null">
+			create_user = #{createUser},
+			</if>
+			<if test="createDate != null">
+			create_date = #{createDate},
+			</if>
+			<if test="updateUser != null">
+			update_user = #{updateUser},
+			</if>
+			<if test="updateDate != null">
+			update_date = #{updateDate},
+			</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="delete" parameterType="java.lang.Long">
+		delete from sys_role where id = #{value}
+	</delete>
+	
+	<delete id="batchDelete" parameterType="java.util.List">
+		delete from sys_role where id in
+		<foreach collection="list" item="item" open="(" close=")" separator=",">
+			#{item}
+		</foreach>
+	</delete>
+	
+</mapper>

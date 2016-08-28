@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.aibibang.web.system.dao.SysOrgDao">
+	
+	<parameterMap id="parameterMap" type="com.aibibang.web.system.entity.SysOrg"></parameterMap>
+	<resultMap id="resultMap" type="com.aibibang.web.system.entity.SysOrg">
+		<id property="id" column="id"/>
+		<result property="orgCode" column="org_code"/>
+		<result property="orgName" column="org_name"/>
+		<result property="parentId" column="parent_id"/>
+		<result property="description" column="description"/>
+		<association property="parentOrg" column="parent_id" select="getById"></association>
+	</resultMap>
+
+	<sql id="queryColumn">
+		t.id,
+		t.org_code,
+		t.org_name,
+		t.description,
+		t.parent_id
+	</sql>
+
+	<select id="find" parameterMap="parameterMap" resultType="com.aibibang.web.system.entity.SysOrg">
+		select 
+			<include refid="queryColumn"></include>
+		from sys_org t
+		<where>
+			<if test="orgName != null and orgName != ''">
+				and t.orgName like '%${orgName}%'
+			</if>
+			<if test="parentId != null">
+				and t.parent_id = #{parentId}
+			</if>
+		</where>
+		order by t.org_code
+	</select>
+	
+	<select id="getById" parameterType="java.lang.Long" resultMap="resultMap">
+		select
+			<include refid="queryColumn"></include>
+		from sys_org t
+		where t.id = #{value}
+	</select>
+
+	<insert id="add" parameterMap="parameterMap">
+		insert into sys_org
+		(
+			org_code,
+			org_name,
+			description,
+			parent_id,
+			create_user,
+			create_date
+		)
+		values
+		(
+			#{orgCode},
+			#{orgName},
+			#{description},
+			#{parentId},
+			#{createUser},
+			#{createDate}
+		)
+	</insert>
+	
+	<update id="update" parameterMap="parameterMap">
+		update sys_org set
+			org_code = #{orgCode},
+			org_name = #{orgName},
+			description = #{description},
+			parent_id = #{parentId},
+			update_user = #{updateUser},
+			update_date = #{updateDate}
+		where id = #{id}
+	</update>
+	
+	<delete id="delete" parameterType="java.lang.Long">
+		delete from sys_org where id = #{value}
+	</delete>
+	
+	<delete id="deleteByParentId" parameterType="java.lang.Long">
+		delete from sys_org where parent_id = #{value}
+	</delete>
+	
+	<select id="findForTreeTable" parameterType="java.lang.Long" resultType="com.aibibang.web.system.entity.SysOrg">
+		select
+			<include refid="queryColumn"></include>,
+			count(o.id) as child_num
+		from sys_org t
+		left join sys_org o on o.parent_id = t.id
+		where t.parent_id = #{value}
+		group by t.id
+		order by t.org_code
+	</select>
+	
+	<select id="getMaxCode" parameterType="java.lang.Long" resultType="java.lang.String">
+		select max(org_code) from sys_org where parent_id  = #{value}
+	</select>
+	
+</mapper>

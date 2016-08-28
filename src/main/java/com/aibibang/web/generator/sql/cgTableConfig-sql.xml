@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.aibibang.web.generator.dao.CgTableConfigDao">
+	
+	<parameterMap id="parameterMap" type="com.aibibang.web.generator.entity.CgTableConfig"></parameterMap>
+	<resultMap id="resultMap" type="com.aibibang.web.generator.entity.CgTableConfig">
+		<id property="id" column="id"/>
+		<result property="tableName" column="table_name"/>
+		<result property="className" column="class_name"/>
+		<result property="description" column="description"/>
+		<result property="isCheckbox" column="is_checkbox"/>
+		<result property="isPage" column="is_page"/>
+		<result property="isTree" column="is_tree"/>
+		<collection property="columns" column="table_id" ofType="com.aibibang.web.generator.entity.CgColumnConfig">
+			<id property="id" column="column_id"/>
+			<result property="tableId" column="table_id"/>
+			<result property="columnName" column="column_name"/>
+			<result property="columnType" column="column_type"/>
+			<result property="columnLength" column="column_length"/>
+			<result property="description" column="column_description"/>
+			<result property="fieldName" column="field_name"/>
+			<result property="fieldType" column="field_type"/>
+			<result property="nullable" column="nullable"/>
+			<result property="relationTable" column="relation_table"/>
+			<result property="relationColumnId" column="relation_column_id"/>
+			<result property="relationColumnText" column="relation_column_text"/>
+			<result property="sort" column="sort"/>
+			<result property="isKey" column="is_key"/>
+			<result property="showType" column="show_type"/>
+			<result property="isQuery" column="is_query"/>
+			<result property="queryModel" column="query_model"/>
+			<result property="queryType" column="query_type"/>
+			<result property="isShowList" column="is_show_list"/>
+			<result property="isShowForm" column="is_show_form"/>
+			<result property="formValidType" column="form_valid_type"/>
+			<result property="orderNum" column="order_num"/>
+		</collection>
+	</resultMap>
+
+	<select id="find" parameterMap="parameterMap" resultMap="resultMap">
+		select 
+			t.id,
+			t.table_name,
+			t.class_name,
+			t.description,
+			t.is_checkbox,
+			t.is_page,
+			t.is_tree
+		from cg_table_config t
+		<where>
+			<if test="tableName != null and tableName != ''">
+				t.table_name like '%${tableName}%'
+			</if>
+			<if test="description != null and description != ''">
+				t.description like '%${description}%'
+			</if>
+		</where>
+	</select>
+	
+	<select id="getById" parameterType="java.lang.Long" resultMap="resultMap">
+		select 
+			t.id,
+			t.table_name,
+			t.class_name,
+			t.description,
+			t.is_checkbox,
+			t.is_page,
+			t.is_tree,
+			c.id as column_id,
+			c.column_name,
+			c.column_type,
+			c.column_length,
+			c.description as column_description,
+			c.field_name,
+			c.field_type,
+			c.nullable,
+			c.relation_table,
+			c.relation_column_id,
+			c.relation_column_text,
+			c.sort,
+			c.is_key,
+			c.show_type,
+			c.is_query,
+			c.query_model,
+			c.query_type,
+			c.is_show_list,
+			c.is_show_form,
+			c.form_valid_type,
+			c.order_num
+		from cg_table_config t
+		left join cg_column_config c on t.id = c.table_id
+		where t.id = #{value}
+	</select>
+
+	<insert id="add" useGeneratedKeys="true" keyProperty="id" parameterMap="parameterMap">
+		insert into cg_table_config
+			(table_name,class_name,description,is_checkbox,is_page,is_tree,create_user,create_date)
+		values
+			(#{tableName},#{className},#{description},#{isCheckbox},#{isPage},#{isTree},
+			#{createUser},#{createDate})
+	</insert>
+	
+	<update id="update" parameterMap="parameterMap">
+		update cg_table_config
+		<set>
+			class_name = #{className},
+			description = #{description},
+			is_checkbox = #{isCheckbox},
+			is_page = #{isPage},
+			is_tree = #{isTree},
+			update_user = #{updateUser},
+			update_date = #{updateDate}
+		</set>
+		where id = #{id}
+	</update>
+
+	<delete id="delete" parameterType="java.lang.Long">
+		delete from cg_table_config where id = #{value}
+	</delete>
+</mapper>

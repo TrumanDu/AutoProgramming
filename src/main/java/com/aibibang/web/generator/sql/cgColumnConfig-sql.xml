@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.aibibang.web.generator.dao.CgColumnConfigDao">
+	
+	<parameterMap id="parameterMap" type="com.aibibang.web.generator.entity.CgColumnConfig"></parameterMap>
+	<resultMap id="resultMap" type="com.aibibang.web.generator.entity.CgColumnConfig">
+		<id property="id" column="id"/>
+		<result property="tableId" column="table_id"/>
+		<result property="columnName" column="column_name"/>
+		<result property="columnType" column="column_type"/>
+		<result property="columnLength" column="column_length"/>
+		<result property="description" column="column_description"/>
+		<result property="fieldName" column="field_name"/>
+		<result property="fieldType" column="field_type"/>
+		<result property="nullable" column="nullable"/>
+		<result property="relationTable" column="relation_table"/>
+		<result property="relationColumnId" column="relation_column_id"/>
+		<result property="relationColumnText" column="relation_column_text"/>
+		<result property="sort" column="sort"/>
+		<result property="isKey" column="is_key"/>
+		<result property="showType" column="show_type"/>
+		<result property="isQuery" column="is_query"/>
+		<result property="queryModel" column="query_model"/>
+		<result property="queryType" column="query_type"/>
+		<result property="isShowList" column="is_show_list"/>
+		<result property="isShowForm" column="is_show_form"/>
+		<result property="formValidType" column="form_valid_type"/>
+		<result property="orderNum" column="order_num"/>
+	</resultMap>
+
+	<sql id="queryColumn">
+		t.id,
+		t.column_name,
+		t.column_type,
+		t.column_length,
+		t.description as column_description,
+		t.field_name,
+		t.field_type,
+		t.nullable,
+		t.relation_table,
+		t.relation_column_id,
+		t.relation_column_text,
+		t.sort,
+		t.is_key,
+		t.show_type,
+		t.is_query,
+		t.query_model,
+		t.query_type,
+		t.is_show_list,
+		t.is_show_form,
+		t.form_valid_type,
+		t.order_num
+	</sql>
+
+	<select id="find" parameterMap="parameterMap" resultMap="resultMap">
+		select 
+			<include refid="queryColumn"></include>
+		from cg_column_config t
+	</select>
+	
+	<insert id="batchAdd" parameterType="java.util.List">
+		insert into cg_column_config 
+		(table_id,column_name,column_type,column_length,description,field_name,field_type,nullable,
+		relation_table,relation_column_id,relation_column_text,sort,is_key,show_type,is_query,
+		query_model,query_type,is_show_list,is_show_form,form_valid_type,order_num)
+		values
+		<foreach collection="list" item="item" separator=",">
+			(#{item.tableId},#{item.columnName},#{item.columnType},#{item.columnLength},#{item.description},
+			#{item.fieldName},#{item.fieldType},#{item.nullable},#{item.relationTable},#{item.relationColumnId},
+			#{item.relationColumnText},#{item.sort},#{item.isKey},#{item.showType},#{item.isQuery},#{item.queryModel},
+			#{item.queryType},#{item.isShowList},#{item.isShowForm},#{item.formValidType},#{item.orderNum})
+		</foreach>
+	</insert>
+	
+	<update id="update" parameterMap="parameterMap">
+		update cg_column_config
+		<set>
+			description = #{description},
+			field_name = #{fieldName},
+			field_type = #{fieldType},
+			nullable = #{nullable},
+			relation_table = #{relationTable},
+			relation_column_id = #{relationColumnId},
+			relation_column_text = #{relationColumnText},
+			sort = #{sort},
+			is_key = #{isKey},
+			show_type = #{showType},
+			is_query = #{isQuery},
+			query_model = #{queryModel},
+			query_type = #{queryType},
+			is_show_list = #{isShowList},
+			is_show_form = #{isShowForm},
+			form_valid_type = #{formValidType},
+			order_num = #{orderNum}
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="batchDelete" parameterType="java.util.List">
+		delete from cg_column_config where id in
+		<foreach collection="list" item="item" open="(" close=")" separator=",">
+			${item}
+		</foreach>
+	</delete>
+	
+	<delete id="delete" parameterType="java.lang.Long">
+		delete from cg_column_config where table_id = #{value}
+	</delete>
+</mapper>

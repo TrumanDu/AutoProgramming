@@ -1,0 +1,63 @@
+/***
+dataTable
+***/
+.table.table-primary thead tr th, 
+.table.table-success thead tr th, 
+.table.table-danger thead tr th, 
+.table.table-warning thead tr th, 
+.table.table-info thead tr th {
+    color: #fff;
+    border-bottom: 0;
+}    
+.table-primary thead tr th{
+	background-color: #428bca;
+}
+.table-success thead tr th{
+	background-color: #45B6AF;
+}
+.table-warning thead tr th{
+	background-color: #dfba49;
+}
+.table-danger thead tr th{
+	background-color: #f1353d;
+}
+.table-info thead tr th{
+	background-color: #89C4F4;
+}
+.table-center > tbody > tr > td{
+	vertical-align: middle;
+}
+/***
+div layout
+***/
+.btn-div .btn{
+	float: left;
+	margin-bottom: 10px;
+}
+.div-left{
+	float: left;
+}
+.div-right{
+	float: right;
+}
+.panel-search .form-inline{
+	margin-bottom: 5px;
+}
+.panel-search .form-inline .form-group{
+	margin-bottom: 5px;
+	min-width: 300px;
+}
+.panel-search .form-inline .form-group .control-label{
+	min-width: 100px;
+}
+.pageination-panel .div-left{
+	min-height:34px;
+	vertical-align: middle;
+	font-size:14px;
+	margin: 13px 0 10px 0;
+}
+.pageination-panel .div-left input{
+	border: 1px solid #e5e5e5;
+	padding: 1px 10px;
+	outline: none;
+}
