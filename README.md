@@ -12,6 +12,7 @@ AutoProgramming是在[jeeidp](http://git.oschina.net/liuzhenjn/jeeidp)（Java EE
 - 基础权限: 用户，角色，组织，菜单权限，数据权限
 - Web容器测试通过的有Tomcat,Weblogic
 - 要求JDK1.6+
+
 ### 系统演示
 ![登录页面](http://git.oschina.net/uploads/images/2016/0807/211213_855cd0b0_665291.png "jeeidp")
 
