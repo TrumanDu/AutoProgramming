@@ -7,7 +7,7 @@ import ${sourceBasePackage}.entity.${entityPackage}.${className};
 </#if>
 import java.util.List;
 
-import com.cg.common.persistence.Page;
+import com.aibibang.common.persistence.Page;
 
 /**
  * 

@@ -15,7 +15,7 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
-import com.cg.common.persistence.Page;
+import com.aibibang.common.persistence.Page;
 
 /**
  * 
