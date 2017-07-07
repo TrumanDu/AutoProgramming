@@ -15,9 +15,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.common.base.BaseController;
-import com.common.persistence.Page;
-import com.common.util.ValidateUtils;
+import com.aibibang.common.base.BaseController;
+import com.aibibang.common.persistence.Page;
+import com.aibibang.common.util.ValidateUtils;
 
 import net.sf.json.JSONObject;
 

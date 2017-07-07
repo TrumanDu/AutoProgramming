@@ -60,7 +60,7 @@
 				<div class="input-icon right">
 					<i class="fa"></i>
 					<input class="form-control form-control-solid placeholder-no-fix" type="password" 
-						autocomplete="off" name="password" value="123456"
+						autocomplete="off" name="password" value="admin"
 						placeholder="<spring:message code="login.label.password"></spring:message>"
 						required title="<spring:message code="login.msg.password"></spring:message>"/>
 				</div>

@@ -5,7 +5,7 @@ import ${sourceBasePackage}.${entityPackage}.entity.${className};
 package ${sourceBasePackage}.dao.${entityPackage};
 import ${sourceBasePackage}.entity.${entityPackage}.${className};
 </#if>
-import com.common.base.BaseDao;
+import com.aibibang.common.base.BaseDao;
 
 /**
  * 

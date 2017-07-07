@@ -97,7 +97,7 @@
 				</li>
 				<!-- END USER LOGIN DROPDOWN -->
 				<li class="dropdown dropdown-quick-sidebar-toggler">
-					<a href="javascript:;" class="dropdown-toggle">
+					<a class="dropdown-toggle" href="<c:url value="/login/logout"></c:url>">
 					<i class="icon-logout"></i>
 					</a>
 				</li>

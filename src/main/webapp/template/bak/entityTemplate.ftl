@@ -7,7 +7,7 @@ import java.io.Serializable;
 import java.util.Date;
 import java.math.BigDecimal;
 
-import com.common.base.BaseEntity;
+import com.aibibang.common.base.BaseEntity;
 
 /**
  * 

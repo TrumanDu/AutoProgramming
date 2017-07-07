@@ -44,11 +44,11 @@ public class LoginController extends BaseController {
 		JSONObject json = new JSONObject();
 		
 		try {
-			
 			SysUser u = sysUserService.findByUsername(user);
-			
 			if(u != null){
-				
+				if(!u.getPassword().equals(user.getPassword())){
+					return json.toString();
+				}
 				HttpSession session = request.getSession();
 				session.setAttribute(SessionAttr.USER_LOGIN.getValue(), u);
 				List<Long> userMenus = sysUserService.findMenuIdByUserId(u.getId());
