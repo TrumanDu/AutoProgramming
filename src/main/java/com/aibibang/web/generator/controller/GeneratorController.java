@@ -88,6 +88,8 @@ public class GeneratorController extends BaseController {
 			
 			CgTableConfig tableConfig = cgTableConfigService.getById(buildCodeConfig.getTableId());
 			buildCodeConfig.setTableConfig(tableConfig);
+			//buildCodeConfig.setPageModel("default");
+			//buildCodeConfig.setPageModel("springboot");
 			// 生成代码
 			CodeGenerateUtils generate = new CodeGenerateUtils(buildCodeConfig);
 			generate.generateFile();

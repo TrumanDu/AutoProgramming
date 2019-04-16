@@ -13,7 +13,7 @@
         <div class="col-md-4">
         	<div class="input-icon right" onclick="openFolder('projectPath')">
 	        	<i class="fa fa-search"></i>
-	          <input type="text" class="form-control" name="projectPath" required/>
+	          <input type="text" class="form-control" name="projectPath" value="d:/test"required/>
 	        </div>
         </div>
       </div>
@@ -50,7 +50,7 @@
         <div class="col-md-4">
         	<div class="input-icon right">
 	        	<i class="fa"></i>
-        		<input type="text" class="form-control" name="sourceBasePackage" value="com.test" placeholder="com.test" required/>
+        		<input type="text" class="form-control" name="sourceBasePackage" value="com.aibibang" placeholder="ccom.aibibang" required/>
         	</div>
         </div>
       </div>
@@ -101,6 +101,7 @@
 	        	<i class="fa"></i>
 	          <select class="form-control" name="pageModel" required>
 							<option value="default">默认风格</option>
+							<option value="springboot">springboot</option>
 						</select>
 	        </div>
         </div>

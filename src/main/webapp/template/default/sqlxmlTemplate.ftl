@@ -35,10 +35,11 @@
 	<select id="find" parameterMap="parameterMap" resultMap="resultMap">
 		<include refid="columnSql"></include>
 		<where>
+		1=1
 			<#list columns as po>
 			<#if po.isKey == 'N'>
 			<if test="${po.fieldName} != null and ${po.fieldName} != ''">
-				t.${po.columnName} = ${'#'}{${po.fieldName}}
+				and t.${po.columnName} = ${'#'}{${po.fieldName}}
 			</if>
 			</#if>
 			</#list>

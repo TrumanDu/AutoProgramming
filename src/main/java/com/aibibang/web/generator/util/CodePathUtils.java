@@ -191,6 +191,7 @@ public class CodePathUtils {
 		  
 		controller("Controller"),
 		service("Service"), 
+		mapper("Mapper"), 
 		serviceImpl("ServiceImpl"), 
 		dao("Dao"),
 		entity(""),
